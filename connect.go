@@ -10,6 +10,12 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
+type EnvConfig struct {
+	user string
+	pass string
+}
+	
+
 // getEnvOrPrompt checks an environment variable or prompts the user if unset.
 func getEnvOrPrompt(envVar, prompt, defaultValue string) string {
 	val := os.Getenv(envVar)
@@ -30,10 +36,25 @@ func getEnvOrPrompt(envVar, prompt, defaultValue string) string {
 	return val
 }
 
+// getEnv checks an environment variable or prompts the user if unset.
+func checkEnv() EnvConfig {
+	if os.Getenv("APP_ENV") == "dev" {
+		user := getEnvOrPrompt("DB_USER", "Enter the database username", "root")
+		pass := getEnvOrPrompt("DB_PASS", "Enter the database password", "password")
+		return EnvConfig{user, pass}
+	} else {
+		user := os.Getenv("DB_USER")
+		pass := os.Getenv("DB_PASS")
+		return EnvConfig{user, pass}	
+	}
+}
+
 // ConnectDB initializes the MySQL connection and returns a *sql.DB instance.
 func ConnectDB(net, addr, dbName string) (*sql.DB, error) {
-	user := getEnvOrPrompt("DB_USER", "Enter the database username", "root")
-	pass := getEnvOrPrompt("DB_PASS", "Enter the database password", "password")
+	// Check environment variables
+	env := checkEnv()
+	user := env.user
+	pass := env.pass
 
 	// Configure database connection
 	cfg := mysql.Config{
