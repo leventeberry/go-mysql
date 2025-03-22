@@ -53,13 +53,13 @@ func checkEnv() EnvConfig {
 func ConnectDB(net, addr, dbName string) (*sql.DB, error) {
 	// Check environment variables
 	env := checkEnv()
-	user := env.user
-	pass := env.pass
+	fmt.Println(env)
+	fmt.Println("🔐 Environment variables loaded")
 
 	// Configure database connection
 	cfg := mysql.Config{
-		User:   user,
-		Passwd: pass,
+		User:   env.user,
+		Passwd: env.pass,
 		Net:    net,
 		Addr:   addr,
 		DBName: dbName,
