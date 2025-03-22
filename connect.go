@@ -53,8 +53,7 @@ func checkEnv() EnvConfig {
 func ConnectDB(net, addr, dbName string) (*sql.DB, error) {
 	// Check environment variables
 	env := checkEnv()
-	fmt.Println(env)
-	fmt.Println("🔐 Environment variables loaded")
+	fmt.Println("[🔐] Environment variables loaded")
 
 	// Configure database connection
 	cfg := mysql.Config{
@@ -77,6 +76,6 @@ func ConnectDB(net, addr, dbName string) (*sql.DB, error) {
 		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
 
-	fmt.Println("✅ Connected to the database")
+	fmt.Println("[✅] Connected to the database")
 	return db, nil
 }
