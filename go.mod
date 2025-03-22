@@ -1,4 +1,4 @@
-module github.com/leventeberry/go-mysql
+module github.com/leventeberry/gomysql
 
 go 1.24.1
 
